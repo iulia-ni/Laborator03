@@ -2,6 +2,7 @@ package ro.pub.cs.systems.eim.lab03.phonedialer;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
@@ -55,6 +56,15 @@ public class PhoneDialerActivity extends AppCompatActivity {
         }
     }
 
+    private LongClickBackspaceListener longClickBackspaceListener = new LongClickBackspaceListener();
+    private class LongClickBackspaceListener implements View.OnLongClickListener {
+        @Override
+        public boolean onLongClick(View view) {
+            etPhoneNumber.setText("");
+            return true;
+        }
+    }
+
     private BackspaceButtonListener backspaceButtonListener = new BackspaceButtonListener();
     private class BackspaceButtonListener implements View.OnClickListener {
         @Override
@@ -70,11 +80,13 @@ public class PhoneDialerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_phone_dialer);
 
         etPhoneNumber = (EditText)findViewById(R.id.phone_number);
         ibBackspace = (ImageButton)findViewById(R.id.backspace_image_button);
         ibBackspace.setOnClickListener(backspaceButtonListener);
+        ibBackspace.setOnLongClickListener(longClickBackspaceListener);
         ibCall = (ImageButton)findViewById(R.id.call_image_button);
         ibCall.setOnClickListener(callImageButtonClickListener);
         ibHangup = (ImageButton)findViewById(R.id.hangup_image_button);
